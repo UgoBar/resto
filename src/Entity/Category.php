@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -24,6 +25,11 @@ class Category
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Dish::class)]
     private Collection $dishes;
+
+    #[Pure] public function __toString()
+    {
+        return $this->getName();
+    }
 
     public function __construct()
     {

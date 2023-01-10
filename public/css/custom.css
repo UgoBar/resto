@@ -1,3 +1,23 @@
 body {
-    margin-top: 150px;
+    font-family: 'Nunito', sans-serif;
+}
+
+h1 {
+    font-family: 'Oswald', sans-serif;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-family: 'Oswald', sans-serif;
+    font-size: 25px;
+}
+
+.navbar-nav {
+    font-size: 16px;
+}
+
+.body-wrapper {
+    padding-top: 150px;
+    position: relative;
+    z-index: 20;
 }
