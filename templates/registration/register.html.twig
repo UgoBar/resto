@@ -1,0 +1,59 @@
+{% extends 'login_base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block form %}
+
+    <div class="mb-md-5">
+        <h2 class="fw-bold mb-2 text-uppercase">Register</h2>
+        <p class="text-white-50 mb-5">Please enter your informations!</p>
+
+        {{ form_start(form) }}
+
+        {# FIRSTNAME #}
+        <div class="form-outline form-white mb-4">
+            {{ form_widget(form.firstname, {attr: {'class':'form-control form-control-lg'}}) }}
+            {{ form_label(form.firstname) }}
+        </div>
+
+        {# LASTNAME #}
+        <div class="form-outline form-white mb-4">
+            {{ form_widget(form.lastname, {attr: {'class':'form-control form-control-lg'}}) }}
+            {{ form_label(form.lastname) }}
+        </div>
+
+        {# EMAIL #}
+        <div class="form-outline form-white mb-4">
+            {{ form_widget(form.email, {attr: {'class':'form-control form-control-lg'}}) }}
+            {{ form_label(form.email) }}
+        </div>
+
+        {# PASSWORD #}
+        <div class="form-outline form-white mb-4">
+            {{ form_widget(form.plainPassword, {attr: {'class':'form-control form-control-lg'}}) }}
+            {{ form_label(form.plainPassword) }}
+        </div>
+
+        {# EMAIL #}
+        <div class="form-outline form-white mb-4">
+            {{ form_widget(form.address, {attr: {'class':'form-control form-control-lg'}}) }}
+            {{ form_label(form.address) }}
+        </div>
+
+        <button class="btn btn-outline-light btn-lg px-5" type="submit">Register</button>
+        {{ form_end(form) }}
+    </div>
+
+    <div>
+        <p class="mb-0">Already have an account? <a href="{{ path('app_login') }}" class="text-white-50 fw-bold">Login</a></p>
+    </div>
+
+    <script>
+        document.querySelectorAll('input').forEach( (el) =>  {
+            if(el.value) {
+                el.classList.add('active');
+            }
+        });
+    </script>
+
+{% endblock %}
