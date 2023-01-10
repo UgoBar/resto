@@ -75,7 +75,7 @@ class DishController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_dish_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'app_dish_delete', methods: ['POST'])]
     public function delete(Request $request, Dish $dish, DishRepository $dishRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$dish->getId(), $request->request->get('_token'))) {

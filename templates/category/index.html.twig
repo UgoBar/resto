@@ -4,14 +4,14 @@
 
 {% block body %}
     <h1 class="text-center text-uppercase">Categories</h1>
-
+    <a class="btn btn-dark" href="{{ path('app_category_new') }}">Create new</a>
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>actions</th>
+                <th class="text-center" style="width: 150px">actions</th>
             </tr>
         </thead>
         <tbody>
@@ -20,9 +20,11 @@
                 <td>{{ category.id }}</td>
                 <td>{{ category.name }}</td>
                 <td>{{ category.description }}</td>
-                <td>
-                    <a href="{{ path('app_category_show', {'id': category.id}) }}">show</a>
-                    <a href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
+                <td class="text-center" style="width: 150px">
+{#                    <a class="btn btn-" href="{{ path('app_category_show', {'id': category.id}) }}">show</a>#}
+                    <a class="btn btn-secondary" href="{{ path('app_category_edit', {'id': category.id}) }}"><i class="fa-solid fa-pen"></i></a>
+                    <button type="button" class="btn btn-danger" onclick="confirmDelete(this, 'la catégorie {{ category.name }}')" data-form-id="category-delete-{{ category.id }}"><i class="fa-solid fa-trash"></i></button>
+                    {{ include('category/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}
@@ -32,6 +34,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_category_new') }}">Create new</a>
 {% endblock %}

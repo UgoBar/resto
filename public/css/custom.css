@@ -21,3 +21,59 @@ h1 {
     position: relative;
     z-index: 20;
 }
+
+.form-wrapper {
+    width: 500px;
+    display: block;
+    margin: 0 auto;
+}
+
+.table tr {
+    vertical-align: baseline;
+}
+
+.table {
+    margin-top: 2em;
+}
+
+.swal2-title {
+    font-size: 19px !important;
+    padding-top: 2em !important;
+}
+
+.bo-card {
+    width: 22%;
+    margin: 1em;
+    background-color: var(--bs-dark);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.card-img-top {
+    width: 180px;
+    display: block;
+    margin: 0 auto;
+}
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: 'Oswald', sans-serif;
+}
+.card-footer {
+    display: flex;
+}
+.card-footer .delete-btn, .card-footer .edit-btn {
+    cursor: pointer;
+    transition: all ease-in-out .2s;
+}
+.card-footer .edit-btn {
+    color: white;
+    text-decoration: none;
+}
+.card-footer .edit-btn:hover {
+    color: #1abc9c;
+}
+.card-footer .delete-btn:hover {
+    color: var(--bs-warning);
+}

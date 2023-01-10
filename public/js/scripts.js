@@ -5,10 +5,9 @@
 */
 //
 // Scripts
-// 
+//
 
 window.addEventListener('DOMContentLoaded', event => {
-
     // Navbar shrink function
     var navbarShrink = function () {
         const navbarCollapsible = document.body.querySelector('#mainNav');
@@ -23,7 +22,7 @@ window.addEventListener('DOMContentLoaded', event => {
 
     };
 
-    // Shrink the navbar 
+    // Shrink the navbar
     navbarShrink();
 
     // Shrink the navbar when page is scrolled
@@ -50,5 +49,19 @@ window.addEventListener('DOMContentLoaded', event => {
             }
         });
     });
-
 });
+
+function confirmDelete(elem, name) {
+    let formId = elem.dataset.formId;
+    Swal.fire({
+        title: `Voulez vous supprimer ${name} ?`,
+        showCancelButton: true,
+        confirmButtonText: 'Delete',
+    }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            const form = document.querySelector('#' + formId);
+            form.submit();
+        }
+    })
+}
