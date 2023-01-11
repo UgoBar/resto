@@ -60,13 +60,13 @@ main {
     background-color: #1a1b1d !important;
 }
 
-.toggle-category {
-    position: absolute;
+.aside-wrapper {
+    position: fixed;
+    text-align: center;
+    width: 192px;
 }
 
-
-
-.aside > a {
+.filter-all {
     font-family: 'Oswald', sans-serif;
     font-size: 20px;
     letter-spacing: 4px;
@@ -110,7 +110,7 @@ main {
     opacity: 0;
 }
 .send-up {
-    top: 1em;
+    top: 2em;
  }
 
 @media screen and (max-width: 992px) {

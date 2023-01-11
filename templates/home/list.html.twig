@@ -10,7 +10,7 @@
         <div class="site-content">
             <h1>Faites votre choix !</h1>
 
-            <transition-group class="dishes" name="projects" >
+            <transition-group class="dishes" name="dishes">
                 <div class="dish" v-if="currentFilter === dish.category || currentFilter === 'ALL'" v-bind:key="dish.name" v-for="dish in dishes">
                     <div class="dish-image-wrapper">
                         <figure>
@@ -86,7 +86,7 @@
                     titlePageNotActive.classList.remove('opacity-0')
                     titlePageNotActive.classList.remove('send-up');
 
-                }, 600);
+                }, 300);
 
                 // Navbar Background
                 bgNotActive.classList.add('active');
@@ -96,10 +96,6 @@
                     bgActive.classList.add('translateY-100');
                     bgActive.classList.remove('active');
                 }, 300);
-
-                // // Category link
-                // asideActive.classList.remove('active');
-                // elem.classList.add('active');
 
             }
         }

@@ -29,6 +29,7 @@
 
 .filter {
     transition: all 0.35s;
+    padding-left: 0;
 }
 
 .dishes {
@@ -85,12 +86,18 @@
     border-radius:5px;
 }
 
+.list-move, /* apply transition to moving elements */
+.list-enter-active,
+.list-leave-active {
+    transition: all 0.5s ease;
+}
+
 .dishes-enter {
     transform: scale(0.5) translatey(-80px);
     opacity:0;
 }
 
-.dishes-leave-to{
+.dishes-leave-to {
     transform: translatey(30px);
     opacity:0;
 }
