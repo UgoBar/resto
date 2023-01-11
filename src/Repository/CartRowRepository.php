@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Cart;
 use App\Entity\CartRow;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -37,6 +38,27 @@ class CartRowRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function insertOrUpdateDuplicateRow(CartRow $cartRow)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+           INSERT INTO `cart_row`(`cart_id`, `dish_id`, `quantity`, `unit_price`)
+           VALUES (:cart_id, :dish_id, :quantity, :price)
+           ON DUPLICATE KEY UPDATE quantity = quantity + :quantity;
+        ';
+
+        $params = [
+            'cart_id'  => $cartRow->getCart()->getId(),
+            'dish_id'  => $cartRow->getDish()->getId(),
+            'quantity' => $cartRow->getQuantity(),
+            'price'    => $cartRow->getUnitPrice()
+        ];
+
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery($params);
     }
 
 //    /**

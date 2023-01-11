@@ -1,0 +1,33 @@
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark aside">
+{#    <div class="toggle-category">#}
+{#        <i class="fa-solid fa-circle-arrow-left"></i>#}
+{#    </div>#}
+    <a href="#" class="mb-3 mb-md-0 text-white text-decoration-none">
+        Catégories
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto filters">
+        <li class="nav-item">
+            <a href="#"
+               class="aside-link filter"
+               v-bind:class="{ active: currentFilter === 'ALL' }"
+               v-on:click="setFilter('ALL')"
+               onclick="filterProducts(this, 'all', 'https://d1oq6ws5qnnbjw.cloudfront.net/category-13951-1920x640/yakisoba.jpg')">
+                Tous
+            </a>
+        </li>
+        {% if categories %}
+            {% for category in categories %}
+            <li class="nav-item">
+                <a href="#"
+                   class="aside-link filter"
+                   v-bind:class="{ active: currentFilter === '{{ category.name }}' }"
+                   v-on:click="setFilter('{{ category.name }}')"
+                   onclick="filterProducts(this, '{{ category.name }}', '{{ category.image }}')">
+                    {{ category.name }}
+                </a>
+            </li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+</div>

@@ -1,0 +1,108 @@
+{% extends 'front_base.html.twig' %}
+
+{% block title %}No Sushis{% endblock %}
+
+{% block body %}
+
+    <main id="app">
+        {{ include('partials/_aside.html.twig') }}
+
+        <div class="site-content">
+            <h1>Faites votre choix !</h1>
+
+            <transition-group class="dishes" name="projects" >
+                <div class="dish" v-if="currentFilter === dish.category || currentFilter === 'ALL'" v-bind:key="dish.name" v-for="dish in dishes">
+                    <div class="dish-image-wrapper">
+                        <figure>
+                            <img class="dish-image" v-bind:src="dish.image">
+                        </figure>
+                        <div class="gradient-overlay"></div>
+                            <span class="dish-title">${dish.name}</span>
+                        <div class="infos">
+                            <div class="default-infos">
+                                <span class="price">${dish.price}&nbsp;€</span>
+                            </div>
+                            <div class="hover-infos">
+                                <button class="btn-classic btn-add" type="button">
+                                    <span class="btn-classic__base">Ajouter</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </transition-group>
+
+        </div>
+    </main>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.22/vue.min.js"></script>
+    <script>
+        const dishes = []
+        {% for dish in dishes %}
+            dishes.push(
+                {
+                    name: '{{ dish.name }}',
+                    image: '{{ dish.image }}',
+                    description: '{{ dish.description }}',
+                    price: '{{ dish.price }}',
+                    category: '{{ dish.category.name }}'
+                }
+            )
+        {% endfor %}
+
+        new Vue({
+            el: "#app",
+            delimiters: ['${', '}'],
+            data: {
+                currentFilter: "ALL",
+                dishes: dishes
+            },
+            methods: {
+                setFilter: function (filter) {
+                    this.currentFilter = filter;
+                }
+            }
+        });
+
+        const filterProducts = (elem, category, bg) => {
+
+            const bgActive    = document.querySelector('.navbar-bg.active');
+            const bgNotActive = document.querySelector('.navbar-bg:not(.active)')
+            const asideActive = document.querySelector('.aside .aside-link.active');
+
+            if(elem !== asideActive) {
+
+                // Category Title
+                let titlePageNotActive = bgNotActive.querySelector('.title-page');
+                let titlePagetActive   = bgActive.querySelector('.title-page');
+                titlePagetActive.classList.add('opacity-0');
+                titlePagetActive.classList.add('send-up');
+                setTimeout(() =>{
+                    // Category Title
+                    titlePageNotActive.innerHTML = category
+                    titlePageNotActive.classList.remove('opacity-0')
+                    titlePageNotActive.classList.remove('send-up');
+
+                }, 600);
+
+                // Navbar Background
+                bgNotActive.classList.add('active');
+                bgNotActive.classList.remove('translateY-100');
+                bgNotActive.style.backgroundImage = `url('${bg}')`;
+                setTimeout(() =>{
+                    bgActive.classList.add('translateY-100');
+                    bgActive.classList.remove('active');
+                }, 300);
+
+                // // Category link
+                // asideActive.classList.remove('active');
+                // elem.classList.add('active');
+
+            }
+        }
+
+    </script>
+{% endblock %}

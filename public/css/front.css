@@ -1,0 +1,126 @@
+body {
+    color: #fdfeff;
+    background-color: #1a1b1d;
+    /*background-image: url("https://www.transparenttextures.com/patterns/back-pattern.png");*/
+    /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+}
+
+.aside, .site-content, .navbar-bg, .title-page {
+    transition: all ease-in-out .2s;
+}
+
+#mainNav {
+    -webkit-box-shadow: -4px 10px 11px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: -4px 10px 11px 0px rgba(0,0,0,0.5);
+    box-shadow: -4px 10px 11px 0px rgba(0,0,0,0.5);
+    display: block !important;
+    height: 250px;
+}
+
+.navbar-bg-wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.navbar-bg {
+    background-position: 50%;
+    background-size: cover;
+    height: 100%;
+}
+.bg-1 {
+    background-image: url(https://d1oq6ws5qnnbjw.cloudfront.net/category-13951-1920x640/yakisoba.jpg);
+    z-index: 1;
+}
+.bg-2 {
+    transform: translateY(-100%);
+}
+.translateY-100 {
+    transform: translateY(-200%);
+}
+
+.navbar > .container {
+    position: relative;
+}
+
+main {
+    display: flex;
+    margin-top: 250px;
+    position: relative;
+}
+
+.aside {
+    width: 225px;
+    padding-top: 38px !important;
+    min-height: calc(100vh - 250px);
+    position: relative;
+    -webkit-box-shadow: 13px 10px 45px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 13px 10px 45px 0px rgba(0,0,0,0.75);
+    box-shadow: 13px 10px 45px 0px rgba(0,0,0,0.75);
+    background-color: #1a1b1d !important;
+}
+
+.toggle-category {
+    position: absolute;
+}
+
+
+
+.aside > a {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-align: center;
+}
+.aside li {
+    padding: 10px 0;
+}
+.aside-link {
+    color: white;
+    padding-left: 10px;
+    text-decoration: none;
+}
+.aside-link:hover {
+    color: var(--bs-warning);
+}
+.aside-link.active {
+    color: var(--bs-warning);
+}
+
+.site-content {
+    padding-top: 25px;
+    padding-right: 40px;
+    padding-left: 40px;
+}
+
+.title-page {
+    position: absolute;
+    z-index: 1200;
+    left: 50%;
+    top: 3em;
+    font-size: 43px;
+    font-family: 'Nunito', sans-serif;
+    text-transform: uppercase;
+    font-weight: 100;
+    transform: translateX(-50%);
+    opacity: 0.6;
+}
+.opacity-0 {
+    opacity: 0;
+}
+.send-up {
+    top: 1em;
+ }
+
+@media screen and (max-width: 992px) {
+    .navbar-nav {
+        margin-top: 25px;
+    }
+    .navbar-nav .nav-item {
+        text-align: end;
+    }
+    .navbar-nav .nav-item a {
+        padding: 5px 0 !important;
+    }
+}

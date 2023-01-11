@@ -39,6 +39,32 @@ class DishRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllWithCategories($withArray, $order)
+    {
+
+        $allProducts = $this->createQueryBuilder('d')
+            ->leftJoin('d.category', 'c')
+            ->addSelect('c')
+            ->orderBy('c.name', $order)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        if($withArray) {
+            $categories = [];
+
+            /** @var Dish $product */
+            foreach ($allProducts as $product) {
+                $categories[$product->getCategory()->getName()][] = $product;
+            }
+
+            return $categories;
+        }
+
+        return $allProducts;
+
+    }
+
 //    /**
 //     * @return Dish[] Returns an array of Dish objects
 //     */

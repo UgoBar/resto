@@ -8,13 +8,12 @@
 
     <a class="btn btn-dark" href="{{ path('app_dish_new') }}">Create new</a>
 
-    {% for category in categories %}
+    {% for key, value in categories %}
         <div class="category mt-4">
-            <h2>{{ category.name }}</h2>
+            <h2>{{ key }}</h2>
             <hr>
-
             <div class="row no-gutter">
-                {% for dish in category.dishes %}
+                {% for dish in value %}
                     <div class="card bo-card">
                         <img src="{{ dish.image }}" class="card-img-top" alt="...">
                         <div class="card-body">
@@ -31,4 +30,5 @@
             </div>
         </div>
     {% endfor %}
+
 {% endblock %}

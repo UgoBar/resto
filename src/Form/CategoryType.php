@@ -22,6 +22,7 @@ class CategoryType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('image')
             ->add('description')
         ;
     }

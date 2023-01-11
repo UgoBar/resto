@@ -17,12 +17,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class DishController extends AbstractController
 {
     #[Route('/', name: 'app_dish_index', methods: ['GET'])]
-    public function index(DishRepository $dishRepository, CategoryRepository $categoryRepository): Response
+    public function index(DishRepository $dishRepository): Response
     {
-
         return $this->render('dish/index.html.twig', [
-            'dishes' => $dishRepository->findAll(),
-            'categories' => $categoryRepository->findAll()
+            'categories' => $dishRepository->findAllWithCategories(true,'ASC')
         ]);
     }
 

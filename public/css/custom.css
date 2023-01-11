@@ -5,11 +5,17 @@ body {
 h1 {
     font-family: 'Oswald', sans-serif;
 }
-
+.bg-dark {
+    --bs-bg-opacity: 1;
+    background-color: #1a1b1d;
+}
 .navbar-brand {
     font-weight: bold;
     font-family: 'Oswald', sans-serif;
     font-size: 25px;
+    position: absolute;
+    left: 55px;
+    z-index: 10;
 }
 
 .navbar-nav {
@@ -63,7 +69,7 @@ h1 {
 .card-footer {
     display: flex;
 }
-.card-footer .delete-btn, .card-footer .edit-btn {
+.card-footer .delete-btn, .card-footer .edit-btn, .custom-btn {
     cursor: pointer;
     transition: all ease-in-out .2s;
 }
@@ -76,4 +82,26 @@ h1 {
 }
 .card-footer .delete-btn:hover {
     color: var(--bs-warning);
+}
+
+.custom-btn {
+    text-decoration: none;
+    font-weight: bold;
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 3px;
+}
+.custom-btn-big {
+    font-size: 20px;
+    padding: .5em 1.5em;
+}
+.custom-btn-yellow {
+    background-color: var(--bs-yellow);
+    color: white;
+}
+.custom-btn-yellow:hover {
+    opacity: .9;
+}
+
+@media screen and (max-width: 992px) {
+
 }

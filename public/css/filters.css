@@ -1,0 +1,101 @@
+.btn-classic {
+    background-color: #000;
+    background-image: none;
+    color: rgb(255, 255, 255);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    line-height: 32px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 15px;
+    border: none;
+    display: inline-block;
+    height: 32px;
+    padding: 0 25px;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-radius: 2px;
+    position: relative;
+    -webkit-transition: all .3s linear;
+    transition: all .3s linear;
+    white-space: nowrap;
+    outline: none !important;
+    margin: 0;
+    touch-action: manipulation;
+}
+
+.filter {
+    transition: all 0.35s;
+}
+
+.dishes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.dish {
+    text-align: center;
+    display: block;
+    color: #fff;
+    padding: 20px 0;
+    cursor: pointer;
+    position: relative;
+    width: 150px;
+    max-width: 100%;
+    margin: 0 auto;
+    transition: all .35s ease-in-out;
+}
+
+.infos {
+    line-height: 32px;
+    height: 32px;
+    overflow: hidden;
+    position: relative;
+}
+
+.dish .default-infos, .dish .hover-infos {
+    -webkit-transition: all .3s cubic-bezier(.645,.045,.355,1);
+    transition: all .3s cubic-bezier(.645,.045,.355,1);
+    height: 32px;
+}
+.dish:hover .default-infos, .dish:hover .hover-infos {
+    transform: translateY(-100%);
+}
+
+.dish {
+    transition: all .35s ease-in-out;
+    margin: 10px;
+    border-radius: 3px;
+    width: 180px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.dish-image-wrapper {
+    position:relative;
+}
+.dish-image {
+    width:100%;
+    height:150px;
+    border-radius:5px;
+}
+
+.dishes-enter {
+    transform: scale(0.5) translatey(-80px);
+    opacity:0;
+}
+
+.dishes-leave-to{
+    transform: translatey(30px);
+    opacity:0;
+}
+
+.dishes-leave-active {
+    position: absolute;
+    z-index:-1;
+}

@@ -26,6 +26,9 @@ class Category
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Dish::class)]
     private Collection $dishes;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
     #[Pure] public function __toString()
     {
         return $this->getName();
@@ -91,6 +94,18 @@ class Category
                 $dish->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
