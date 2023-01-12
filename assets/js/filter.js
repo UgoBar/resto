@@ -18,16 +18,38 @@ new Vue({
         currentFilter: "TOUS",
         dishes: dishes,
         showCart: false,
-        total: 0,
-        cart: {},
+        showAdminMenu: false,
+        total: total,
+        cart: cart,
         arrayOfPrice: {}
     },
     methods: {
         setFilter: function (filter) {
             this.currentFilter = filter;
         },
+        command: function() {
+            if(Object.keys(cart).length > 0) {
+                // Send command
+                axios.post(COMMAND_CART_URL, {cart: cart}).then(response => {
+                    if(response.data.success) {
+                        // Clear cart
+                        Object.entries(this.cart).forEach(row => {
+                            this.$delete(this.cart, row[0])
+                        });
+                        this.toggleCart();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Super!',
+                            text: 'Votre commande est finalisée !',
+                            confirmButtonText: `<a class="custom-btn-black custom-btn-small text-uppercase" href="#">Fermer</a>`
+                        })
+                    }
+                });
+             }
+        },
         addDishToCart: function(dish) {
             if(dish.userId) {
+                // Add dish to cart
                 axios.post(ADD_DISH_TO_CART_URL, { row: dish })
                     .then(response => {
                         if(!this.cart[dish.name]) {
@@ -42,7 +64,6 @@ new Vue({
                             })
                         } else {
                             this.cart[dish.name].quantity ++;
-                            console.log('cart', this.cart)
                         }
                         this.calculTotalRow(dish.name);
                         this.totalPrice();
@@ -67,12 +88,6 @@ new Vue({
             } else {
                 this.total = 0
             }
-        },
-        // TOGGLE ASIDE CART MENU
-        toggleCart: function () {
-            const aside = document.querySelector('aside');
-            this.showCart = !this.showCart
-            this.showCart ? aside.style.right = 0 : aside.style.right = "-575px";
         },
         // ADD ITEM TO CART
         addItem: function(name) {
@@ -103,6 +118,12 @@ new Vue({
                 delete this.arrayOfPrice[name];
             }
             this.totalPrice();
+        },
+        // TOGGLE ASIDE CART MENU
+        toggleCart: function () {
+            const aside = document.querySelector('aside');
+            this.showCart = !this.showCart
+            this.showCart ? aside.style.right = 0 : aside.style.right = "-575px";
         },
         filterProducts: function(elem, category, bg) {
             const bgActive    = document.querySelector('.navbar-bg.active');

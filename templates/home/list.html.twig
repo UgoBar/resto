@@ -13,7 +13,7 @@
                 <p>Régalez vous bien.</p>
             {% else %}
                 <h1>Hey ! On dirait que vous n'êtes pas encore connecté.</h1>
-                <p class="mb-4">Connectez vous ou bien créez un compte pour pouvoir finaliser une commande. Ne vous inquiétez pas, elle sera conservée.</p>
+                <p class="mb-4">Connectez vous ou bien créez un compte pour créer un panier.</p>
                 <a class="custom-btn custom-btn-yellow custom-btn-small text-uppercase" href="{{ path('app_login') }}">Se connecter</a>
                 <a class="custom-btn-outline-yellow custom-btn-small text-uppercase mb-5" href="{{ path('app_register') }}">Créer un compte</a>
             {% endif %}
@@ -65,8 +65,8 @@
                 </div>
             </div>
             <div class="cartFooter">
-                <button class="custom-btn custom-btn-yellow custom-btn-small text-uppercase" v-on:click="command()">Commander</button>
-                <h4 class="d-inline float-end"><span class="badge bg-secondary super-total">${ total | toCurrency }</span></h4>
+                <button class="custom-btn custom-btn-yellow custom-btn-small text-uppercase" v-if="Object.keys(cart).length > 0" v-on:click="command()">Commander</button>
+                <h4 class="d-inline float-end"><span class="badge bg-secondary super-total"  v-if="Object.keys(cart).length > 0">${ total | toCurrency }</span></h4>
             </div>
         </aside>
     </main>
@@ -74,15 +74,38 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.22/vue.min.js"></script>
     <script>
 
         const dishes    = [];
+        const cart      = {};
+        let total       = 0;
+
         const LOGIN_URL = '{{ path('app_login') }}';
         const ADD_DISH_TO_CART_URL = '{{ path('add_to_cart') }}';
         const REMOVE_FROM_CART_URL = '{{ path('remove_from_cart') }}';
+        const COMMAND_CART_URL     = '{{ path('command_cart') }}';
 
         // GET THE PENDING CART
+        {% if cartPending is not null %}
+            {% for row in cartPending %}
+                cart['{{ row.dish.name }}'] = {
+                    name: '{{ row.dish.name }}',
+                    id: '{{ row.dish.id }}',
+                    price: {{ row.unitPrice }},
+                    quantity: {{ row.quantity }},
+                    total: {{ row.quantity }} * {{ row.unitPrice }},
+                    tagId: 'dish-' + {{ row.dish.id }},
+                    rowId: {{ row.id }}
+                }
+            {% endfor %}
+        {% endif %}
+
+        // Set total to cart
+        if(Object.keys(cart).length > 0) {
+            total = Object.values(cart).reduce((prev, curr) => prev.total + curr.total);
+        }
 
         {% for dish in dishes %}
             dishes.push(
@@ -100,5 +123,6 @@
     </script>
 
     {{ encore_entry_script_tags('filter') }}
+    {{ encore_entry_script_tags('front') }}
 
 {% endblock %}

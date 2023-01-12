@@ -9,6 +9,7 @@ use App\Repository\CartRepository;
 use App\Repository\CartRowRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\DishRepository;
+use App\Service\GetAgeService;
 use App\Service\UserCartService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,7 +31,7 @@ class HomeController extends AbstractController
     }
 
     #[Route('/list', name: 'app_list')]
-    public function list(DishRepository $dishRepository, CategoryRepository $categoryRepository, CartRowRepository $cartRowRepository): Response
+    public function list(DishRepository $dishRepository, CategoryRepository $categoryRepository, CartRowRepository $cartRowRepository, UserCartService $userCartService): Response
     {
         if($user = $this->getUser()) {
             $cartPending = $cartRowRepository->findPendingUserCart($user);
@@ -43,15 +44,26 @@ class HomeController extends AbstractController
         ]);
     }
 
+    #[Route('/command-cart', name: 'command_cart')]
+    public function commandCartAjax(EntityManagerInterface $em, Request $request, UserCartService $cartService): Response
+    {
+        $data = $this->getDataAndCheckUser($request);
+        $cart = $cartService->getOrCreateCurrentCart($this->getUser());
+        if(!$cart) {
+            return new JsonResponse(['error' => true]);
+        }
+
+        $cart->setState(Cart::FINALISED);
+        $em->persist($cart);
+        $em->flush();
+
+        return new JsonResponse(['success' => true]);
+    }
+
     #[Route('/remove-from-cart', name: 'remove_from_cart')]
     public function removeFromCartAjax(EntityManagerInterface $em, Request $request, CartRowRepository $cartRowRepository): Response
     {
-        $data = $request->getContent();
-        $data = json_decode($data, true);
-
-        if(empty($data) || !$this->getUser()) {
-            return new JsonResponse(['error' => true]);
-        }
+        $data = $this->getDataAndCheckUser($request);
 
         $rowData = $data['row'];
 
@@ -64,12 +76,15 @@ class HomeController extends AbstractController
             $row->setQuantity($row->getQuantity() - 1);
             $cart->setTotalPrice($cart->getTotalPrice() - $row->getUnitPrice());
             $em->persist($row);
+            $em->persist($cart);
         } else {
             $cart->setTotalPrice($cart->getTotalPrice() - $row->getUnitPrice());
             $em->remove($row);
+            if($cart->getTotalPrice() == 0) {
+                $em->remove($cart);
+            }
         }
 
-        $em->persist($cart);
         $em->flush();
 
         return new JsonResponse(['success' => true]);
@@ -79,12 +94,7 @@ class HomeController extends AbstractController
     public function addToCartAjax(EntityManagerInterface $em, Request $request, UserCartService $cartService, CartRowRepository $cartRowRepository): Response
     {
 
-        $data = $request->getContent();
-        $data = json_decode($data, true);
-
-        if(empty($data) || !$this->getUser()) {
-            return new JsonResponse(['error' => true]);
-        }
+        $data = $this->getDataAndCheckUser($request);
 
         $user = $this->getUser();
         $rowData = $data['row'];
@@ -111,5 +121,17 @@ class HomeController extends AbstractController
         }
 
         return new JsonResponse(['error' => true]);
+    }
+
+    private function getDataAndCheckUser(Request $request)
+    {
+        $data = $request->getContent();
+        $data = json_decode($data, true);
+
+        if(empty($data) || !$this->getUser()) {
+            return new JsonResponse(['error' => true]);
+        }
+
+        return $data;
     }
 }

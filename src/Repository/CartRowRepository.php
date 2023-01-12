@@ -52,7 +52,7 @@ class CartRowRepository extends ServiceEntityRepository
             ->andWhere('c.user = :user')
             ->andWhere('c.state = :cartState')
             ->setParameter('user', $user)
-            ->setParameter('cartState', 0)
+            ->setParameter('cartState', false)
             ->getQuery()
             ->getResult();
     }

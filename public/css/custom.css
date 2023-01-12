@@ -88,7 +88,7 @@ button {
     border: none;
     outline: none;
 }
-.custom-btn, .custom-btn-outline-yellow {
+.custom-btn, .custom-btn-outline-yellow, .custom-btn-black {
     text-decoration: none;
     font-weight: bold;
     font-family: 'Oswald', sans-serif;
@@ -107,11 +107,15 @@ button {
     font-size: 15px;
     padding: .5em 1.5em;
 }
+.custom-btn-black {
+    background-color: black;
+    color: white;
+}
 .custom-btn-yellow {
     background-color: var(--bs-yellow);
     color: white;
 }
-.custom-btn-yellow:hover {
+.custom-btn-yellow:hover, .custom-btn-black:hover {
     opacity: .9;
 }
 
