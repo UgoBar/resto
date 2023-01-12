@@ -39,7 +39,7 @@ class DishRepository extends ServiceEntityRepository
         }
     }
 
-    public function findAllWithCategories($withArray, $order)
+    public function findAllWithCategories(bool $withArray, string $order)
     {
 
         $allProducts = $this->createQueryBuilder('d')

@@ -84,14 +84,27 @@ h1 {
     color: var(--bs-warning);
 }
 
-.custom-btn {
+button {
+    border: none;
+    outline: none;
+}
+.custom-btn, .custom-btn-outline-yellow {
     text-decoration: none;
     font-weight: bold;
     font-family: 'Oswald', sans-serif;
     letter-spacing: 3px;
 }
+.custom-btn-outline-yellow {
+    border: 1px solid var(--bs-yellow);
+    color: white;
+    background-color: transparent;
+}
 .custom-btn-big {
     font-size: 20px;
+    padding: .5em 1.5em;
+}
+.custom-btn-small {
+    font-size: 15px;
     padding: .5em 1.5em;
 }
 .custom-btn-yellow {

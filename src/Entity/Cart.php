@@ -11,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CartRepository::class)]
 class Cart
 {
+
+    // State
+    const PENDING = 50;
+    const FINALISED = 100;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -28,7 +33,7 @@ class Cart
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'cart', targetEntity: CartRow::class)]
+    #[ORM\OneToMany(mappedBy: 'cart', targetEntity: CartRow::class, cascade: ["all"])]
     private Collection $cartRows;
 
     #[ORM\ManyToOne(inversedBy: 'carts')]

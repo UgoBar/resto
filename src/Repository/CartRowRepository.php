@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\Cart;
 use App\Entity\CartRow;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -40,6 +40,23 @@ class CartRowRepository extends ServiceEntityRepository
         }
     }
 
+    public function findPendingUserCart(User $user)
+    {
+        return $this->createQueryBuilder('cr')
+            ->leftJoin('cr.cart', 'c')
+            ->leftJoin('cr.dish', 'd')
+            ->leftJoin('c.user', 'u')
+            ->addSelect('c')
+            ->addSelect('u')
+            ->addSelect('d')
+            ->andWhere('c.user = :user')
+            ->andWhere('c.state = :cartState')
+            ->setParameter('user', $user)
+            ->setParameter('cartState', 0)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function insertOrUpdateDuplicateRow(CartRow $cartRow)
     {
         $conn = $this->getEntityManager()->getConnection();
@@ -57,8 +74,9 @@ class CartRowRepository extends ServiceEntityRepository
             'price'    => $cartRow->getUnitPrice()
         ];
 
-        $stmt = $conn->prepare($sql);
-        $resultSet = $stmt->executeQuery($params);
+        $stmt = $conn->prepare($sql)->executeQuery($params);
+
+        return $conn->lastInsertId();
     }
 
 //    /**

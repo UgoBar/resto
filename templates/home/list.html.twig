@@ -8,10 +8,18 @@
         {{ include('partials/_aside.html.twig') }}
 
         <div class="site-content">
-            <h1>Faites votre choix !</h1>
+            {% if app.user %}
+                <h1>Content de vous revoir {{ app.user.firstname }} !</h1>
+                <p>Régalez vous bien.</p>
+            {% else %}
+                <h1>Hey ! On dirait que vous n'êtes pas encore connecté.</h1>
+                <p class="mb-4">Connectez vous ou bien créez un compte pour pouvoir finaliser une commande. Ne vous inquiétez pas, elle sera conservée.</p>
+                <a class="custom-btn custom-btn-yellow custom-btn-small text-uppercase" href="{{ path('app_login') }}">Se connecter</a>
+                <a class="custom-btn-outline-yellow custom-btn-small text-uppercase mb-5" href="{{ path('app_register') }}">Créer un compte</a>
+            {% endif %}
 
             <transition-group class="dishes" name="dishes">
-                <div class="dish" v-if="currentFilter === dish.category || currentFilter === 'ALL'" v-bind:key="dish.name" v-for="dish in dishes">
+                <div class="dish" v-if="currentFilter === dish.category || currentFilter === 'TOUS'" v-bind:key="dish.name" v-for="dish in dishes" v-on:click="addDishToCart(dish)">
                     <div class="dish-image-wrapper">
                         <figure>
                             <img class="dish-image" v-bind:src="dish.image">
@@ -31,8 +39,36 @@
                     </div>
                 </div>
             </transition-group>
-
         </div>
+
+        <!-- PANIER -->
+        <aside>
+            <div class="cart-arrow" v-on:click="toggleCart()">
+                <i class="fa-solid fa-arrow-right"></i>
+            </div>
+            <h3 class="text-center">Panier</h3>
+            <hr>
+            <div class="cart">
+                <p class="lead text-center" v-if="Object.keys(cart).length === 0">Aucun article pour le moment.</p>
+                <div class="cartArticle" v-bind:id="dish.tagId" v-else v-for="dish in cart" style="display: flex" >
+                    <div class="info">
+                        <span class="rowQuantity badge bg-dark text-white ms-1 rounded-pill">${dish.quantity}</span>
+                        <p class="lead ps-2 d-inline">${dish.name}</p>
+                    </div>
+                    <div class="controls">
+                        <span v-on:click="addItem(dish.name)" class="pe-3">+</span>
+                        <span v-on:click="removeItem(dish.name)">-</span>
+                    </div>
+                    <div class="price">
+                        <div class="float-end"><p class="lead d-inline">${ dish.total | toCurrency }</p><span></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cartFooter">
+                <button class="custom-btn custom-btn-yellow custom-btn-small text-uppercase" v-on:click="command()">Commander</button>
+                <h4 class="d-inline float-end"><span class="badge bg-secondary super-total">${ total | toCurrency }</span></h4>
+            </div>
+        </aside>
     </main>
 
 {% endblock %}
@@ -40,65 +76,29 @@
 {% block javascripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.22/vue.min.js"></script>
     <script>
-        const dishes = []
+
+        const dishes    = [];
+        const LOGIN_URL = '{{ path('app_login') }}';
+        const ADD_DISH_TO_CART_URL = '{{ path('add_to_cart') }}';
+        const REMOVE_FROM_CART_URL = '{{ path('remove_from_cart') }}';
+
+        // GET THE PENDING CART
+
         {% for dish in dishes %}
             dishes.push(
                 {
+                    id: {{ dish.id }},
                     name: '{{ dish.name }}',
                     image: '{{ dish.image }}',
                     description: '{{ dish.description }}',
-                    price: '{{ dish.price }}',
-                    category: '{{ dish.category.name }}'
+                    price: {{ dish.price }},
+                    category: '{{ dish.category.name }}',
+                    userId: '{{ app.user ? app.user.id : null }}'
                 }
             )
         {% endfor %}
-
-        new Vue({
-            el: "#app",
-            delimiters: ['${', '}'],
-            data: {
-                currentFilter: "ALL",
-                dishes: dishes
-            },
-            methods: {
-                setFilter: function (filter) {
-                    this.currentFilter = filter;
-                }
-            }
-        });
-
-        const filterProducts = (elem, category, bg) => {
-
-            const bgActive    = document.querySelector('.navbar-bg.active');
-            const bgNotActive = document.querySelector('.navbar-bg:not(.active)')
-            const asideActive = document.querySelector('.aside .aside-link.active');
-
-            if(elem !== asideActive) {
-
-                // Category Title
-                let titlePageNotActive = bgNotActive.querySelector('.title-page');
-                let titlePagetActive   = bgActive.querySelector('.title-page');
-                titlePagetActive.classList.add('opacity-0');
-                titlePagetActive.classList.add('send-up');
-                setTimeout(() =>{
-                    // Category Title
-                    titlePageNotActive.innerHTML = category
-                    titlePageNotActive.classList.remove('opacity-0')
-                    titlePageNotActive.classList.remove('send-up');
-
-                }, 300);
-
-                // Navbar Background
-                bgNotActive.classList.add('active');
-                bgNotActive.classList.remove('translateY-100');
-                bgNotActive.style.backgroundImage = `url('${bg}')`;
-                setTimeout(() =>{
-                    bgActive.classList.add('translateY-100');
-                    bgActive.classList.remove('active');
-                }, 300);
-
-            }
-        }
-
     </script>
+
+    {{ encore_entry_script_tags('filter') }}
+
 {% endblock %}

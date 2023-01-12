@@ -27,6 +27,17 @@
     touch-action: manipulation;
 }
 
+.swal2-styled.swal2-confirm {
+    background-color: unset !important;
+    border: none !important;
+}
+.swal2-actions:not(.swal2-loading) .swal2-styled:hover {
+    background-image: unset !important;
+}
+.swal2-styled.swal2-confirm:focus {
+    box-shadow: unset !important;
+}
+
 .filter {
     transition: all 0.35s;
     padding-left: 0;

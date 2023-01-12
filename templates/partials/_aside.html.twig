@@ -11,9 +11,8 @@
             <li class="nav-item">
                 <a href="#"
                    class="aside-link filter"
-                   v-bind:class="{ active: currentFilter === 'ALL' }"
-                   v-on:click="setFilter('ALL')"
-                   onclick="filterProducts(this, 'all', 'https://d1oq6ws5qnnbjw.cloudfront.net/category-13951-1920x640/yakisoba.jpg')">
+                   v-bind:class="{ active: currentFilter === 'TOUS' }"
+                   v-on:click="setFilter('TOUS'); filterProducts(this, 'TOUS', 'https://d1oq6ws5qnnbjw.cloudfront.net/category-13951-1920x640/yakisoba.jpg')">
                     Tous
                 </a>
             </li>
@@ -23,8 +22,8 @@
                         <a href="#"
                            class="aside-link filter"
                            v-bind:class="{ active: currentFilter === '{{ category.name }}' }"
-                           v-on:click="setFilter('{{ category.name }}')"
-                           onclick="filterProducts(this, '{{ category.name }}', '{{ category.image }}')">
+                           v-on:click="setFilter('{{ category.name }}'); filterProducts(this, '{{ category.name }}', '{{ category.image }}')">
+{#                           onclick="filterProducts(this, '{{ category.name }}', '{{ category.image }}')">#}
                             {{ category.name }}
                         </a>
                     </li>
@@ -32,4 +31,6 @@
             {% endif %}
         </ul>
     </div>
+
+    <button class="custom-btn custom-btn-outline-yellow custom-btn-small text-uppercase" v-on:click="toggleCart()">Panier</button>
 </div>
