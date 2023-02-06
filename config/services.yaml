@@ -21,4 +21,7 @@ services:
             - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed
+    App\Service\StripeService:
+        arguments:
+            $stripePrivateKey: '%env(PRIVATE_STRIPE_API_KEY)%'
     # please note that last definitions always *replace* previous ones

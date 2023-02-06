@@ -26,23 +26,26 @@ new Vue({
     methods: {
         setFilter: function (filter) {
             this.currentFilter = filter;
+            console.log(this.cart)
         },
         command: function() {
             if(Object.keys(cart).length > 0) {
                 // Send command
                 axios.post(COMMAND_CART_URL, {cart: cart}).then(response => {
+                    // Load spinner
+
                     if(response.data.success) {
                         // Clear cart
                         Object.entries(this.cart).forEach(row => {
                             this.$delete(this.cart, row[0])
                         });
                         this.toggleCart();
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Super!',
-                            text: 'Votre commande est finalisée !',
-                            confirmButtonText: `<a class="custom-btn-black custom-btn-small text-uppercase" href="#">Fermer</a>`
-                        })
+                        // Swal.fire({
+                        //     icon: 'success',
+                        //     title: 'Super!',
+                        //     text: 'Votre commande est finalisée !',
+                        //     confirmButtonText: `<a class="custom-btn-black custom-btn-small text-uppercase" href="#">Fermer</a>`
+                        // })
                     }
                 });
              }
@@ -60,7 +63,8 @@ new Vue({
                                 quantity: 1,
                                 total: (dish.price * 1),
                                 tagId: 'dish-' + dish.id,
-                                rowId: response.data.rowId
+                                rowId: response.data.rowId,
+                                img: dish.image
                             })
                         } else {
                             this.cart[dish.name].quantity ++;

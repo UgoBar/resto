@@ -9,3 +9,13 @@ if(dropdownLink) {
     });
 }
 
+let showBurgerMenu = false;
+const navbarToggler = document.querySelector('.navbar-toggler');
+const navbarResponsive = document.querySelector('#navbarResponsive');
+
+if(navbarToggler) {
+    navbarToggler.addEventListener('click', (event) => {
+        showBurgerMenu = !showBurgerMenu;
+        showBurgerMenu ? navbarResponsive.classList.add('show') : navbarResponsive.classList.remove('show');
+    });
+}

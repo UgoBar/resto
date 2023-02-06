@@ -18,6 +18,8 @@
                 <a class="custom-btn-outline-yellow custom-btn-small text-uppercase mb-5" href="{{ path('app_register') }}">Créer un compte</a>
             {% endif %}
 
+            <a class="custom-btn custom-btn-yellow custom-btn-small text-uppercase" href="{{ path('app_payment') }}">Payer</a>
+
             <transition-group class="dishes" name="dishes">
                 <div class="dish" v-if="currentFilter === dish.category || currentFilter === 'TOUS'" v-bind:key="dish.name" v-for="dish in dishes" v-on:click="addDishToCart(dish)">
                     <div class="dish-image-wrapper">
@@ -43,30 +45,33 @@
 
         <!-- PANIER -->
         <aside>
-            <div class="cart-arrow" v-on:click="toggleCart()">
-                <i class="fa-solid fa-arrow-right"></i>
-            </div>
-            <h3 class="text-center">Panier</h3>
-            <hr>
-            <div class="cart">
-                <p class="lead text-center" v-if="Object.keys(cart).length === 0">Aucun article pour le moment.</p>
-                <div class="cartArticle" v-bind:id="dish.tagId" v-else v-for="dish in cart" style="display: flex" >
-                    <div class="info">
-                        <span class="rowQuantity badge bg-dark text-white ms-1 rounded-pill">${dish.quantity}</span>
-                        <p class="lead ps-2 d-inline">${dish.name}</p>
-                    </div>
-                    <div class="controls">
-                        <span v-on:click="addItem(dish.name)" class="pe-3">+</span>
-                        <span v-on:click="removeItem(dish.name)">-</span>
-                    </div>
-                    <div class="price">
-                        <div class="float-end"><p class="lead d-inline">${ dish.total | toCurrency }</p><span></span></div>
+            <div class="overlay"></div>
+            <div class="aside-content">
+                <div class="cart-arrow" v-on:click="toggleCart()">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+                <h3 class="text-center">Panier</h3>
+                <hr>
+                <div class="cart">
+                    <p class="lead text-center" v-if="Object.keys(cart).length === 0">Aucun article pour le moment.</p>
+                    <div class="cartArticle" v-bind:id="dish.tagId" v-else v-for="dish in cart" style="display: flex" >
+                        <div class="info">
+                            <span class="rowQuantity badge bg-dark text-white ms-1 rounded-pill">${dish.quantity}</span>
+                            <p class="lead ps-2 d-inline">${dish.name}</p>
+                        </div>
+                        <div class="controls">
+                            <span v-on:click="addItem(dish.name)" class="pe-3">+</span>
+                            <span v-on:click="removeItem(dish.name)">-</span>
+                        </div>
+                        <div class="price">
+                            <div class="float-end"><p class="lead d-inline">${ dish.total | toCurrency }</p><span></span></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="cartFooter">
-                <button class="custom-btn custom-btn-yellow custom-btn-small text-uppercase" v-if="Object.keys(cart).length > 0" v-on:click="command()">Commander</button>
-                <h4 class="d-inline float-end"><span class="badge bg-secondary super-total"  v-if="Object.keys(cart).length > 0">${ total | toCurrency }</span></h4>
+                <div class="cartFooter">
+                    <button class="custom-btn custom-btn-yellow custom-btn-small text-uppercase" v-if="Object.keys(cart).length > 0" v-on:click="command()">Commander</button>
+                    <h4 class="d-inline float-end"><span class="badge bg-secondary super-total"  v-if="Object.keys(cart).length > 0">${ total | toCurrency }</span></h4>
+                </div>
             </div>
         </aside>
     </main>
@@ -74,7 +79,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{ parent() }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.22/vue.min.js"></script>
     <script>
 
@@ -85,7 +90,7 @@
         const LOGIN_URL = '{{ path('app_login') }}';
         const ADD_DISH_TO_CART_URL = '{{ path('add_to_cart') }}';
         const REMOVE_FROM_CART_URL = '{{ path('remove_from_cart') }}';
-        const COMMAND_CART_URL     = '{{ path('command_cart') }}';
+        const COMMAND_CART_URL     = '{{ path('app_payment') }}';
 
         // GET THE PENDING CART
         {% if cartPending is not null %}
@@ -97,14 +102,20 @@
                     quantity: {{ row.quantity }},
                     total: {{ row.quantity }} * {{ row.unitPrice }},
                     tagId: 'dish-' + {{ row.dish.id }},
-                    rowId: {{ row.id }}
+                    rowId: {{ row.id }},
+                    img: '{{ row.dish.image }}'
                 }
             {% endfor %}
         {% endif %}
 
         // Set total to cart
         if(Object.keys(cart).length > 0) {
-            total = Object.values(cart).reduce((prev, curr) => prev.total + curr.total);
+            Object.entries(cart).forEach(row => {
+
+                if(!isNaN(row[1].total))
+                    total += row[1].total;
+
+            });
         }
 
         {% for dish in dishes %}
@@ -123,6 +134,5 @@
     </script>
 
     {{ encore_entry_script_tags('filter') }}
-    {{ encore_entry_script_tags('front') }}
 
 {% endblock %}

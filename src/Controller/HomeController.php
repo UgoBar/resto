@@ -47,7 +47,7 @@ class HomeController extends AbstractController
     #[Route('/command-cart', name: 'command_cart')]
     public function commandCartAjax(EntityManagerInterface $em, Request $request, UserCartService $cartService): Response
     {
-        $data = $this->getDataAndCheckUser($request);
+
         $cart = $cartService->getOrCreateCurrentCart($this->getUser());
         if(!$cart) {
             return new JsonResponse(['error' => true]);
